@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "background" : {"page":"background.html"},
+  "name": "Sageaxcess Addon",
+  "version": "1.0",
+  "description": "",
+  "permissions": [ "http://*/*","https://*/*","unlimitedStorage","tabs" ,"webRequest","webRequestBlocking"],
+   "content_scripts": [
+    {
+      "matches": ["http://*/*","https://*/*"],
+      "js" : ["contentscript.js"],
+      "all_frames": true,
+	"run_at":"document_end"
+    }    
+    ],
+
+
+}
