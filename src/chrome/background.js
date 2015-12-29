@@ -1,6 +1,6 @@
 var _port = '8111';
 var _appUrl = 'http://localhost:' + _port + '/';
-var _debug = false;
+var _debug = true;
 var _processingUrls = {};
 
 var _fields = [
@@ -24,6 +24,7 @@ function log() {
 chrome.webRequest.onBeforeRequest.addListener(function (details) {
     var username = '';
     if (details.requestBody && details.requestBody.formData) {
+        log(details.requestBody.formData);
         var formData = details.requestBody.formData;
         for (var field in formData) {
             if (_fields.indexOf(field.toLowerCase()) != -1) {
@@ -65,6 +66,9 @@ chrome.webRequest.onCompleted.addListener(function (details) {
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.action == 'hashchange') {
         notifyApp('GET', message.url, message.username);
+    }
+    else if (message.action == 'fieldsFound') {
+        _fields = message.fields.concat(_fields);
     }
 });
 
