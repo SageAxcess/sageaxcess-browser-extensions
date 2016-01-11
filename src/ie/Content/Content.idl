@@ -1,0 +1,27 @@
+// Content.idl : IDL source for Content
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Content.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "CommonInterface.idl";
+
+[
+	uuid(3BBF4FF0-15CC-49EC-B8BB-AD6FB93B5DAF),
+	version(1.0),
+	helpstring("Content 1.0 Type Library")
+]
+library ContentLib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(C8EDF43C-09F4-453B-8823-CB70E525031C)
+	]
+	coclass BrowserHelper
+	{
+		[default] interface IDispatch;
+	};
+};
