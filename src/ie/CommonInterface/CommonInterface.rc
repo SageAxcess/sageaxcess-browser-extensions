@@ -50,7 +50,7 @@ BEGIN
             VALUE "InternalName", "CommonInterface.dll"
             VALUE "LegalCopyright", "SageAxcess"
             VALUE "OriginalFilename", "CommonInterface.dll"
-            VALUE "ProductName", "Expert+"
+            VALUE "ProductName", "SageAxcess"
             VALUE "ProductVersion", "1.0.0.0"
         END
     END
