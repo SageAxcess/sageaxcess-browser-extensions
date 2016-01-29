@@ -1,5 +1,13 @@
 if (window == window.top) {
 
+    var _fields = [
+        'username',
+        'uname',
+        'user',
+        'login',
+        'user_name'
+    ];
+
     function processUrl(url) {
         var completed = null;
         var p = url.indexOf('?');
