@@ -3,10 +3,11 @@ This folder has all of the code for the Chrome browser extension.
 REMOVE this file before posting extension into Chrome Store.
 
 For testing:
-1. Open Chrome Settings 
-2. Enable Developer Mode
-3. Click "Load unpacked extension" button
-4. Choose folder with extension
+
+1.  Open Chrome Settings 
+2.  Enable Developer Mode
+3.  Click "Load unpacked extension" button
+4.  Choose folder with extension
 
 Once extension will be loaded to Chrome you can test it.
 
