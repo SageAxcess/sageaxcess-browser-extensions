@@ -1,0 +1,9 @@
+{
+"name": "Aegis Agent",
+"version": "1.0.1",
+"applications": {
+  "gecko": {
+    "id": "aegis-agent@sageaxcess.com"
+  }
+}
+}
