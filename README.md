@@ -59,15 +59,13 @@ Run src\ie\makeieinstaller.bat
 
 ### Chrome
 
-Windows: Create a new key equal to extension id under HKEY_LOCAL_MACHINE\Software\Wow6432Node\Google\Chrome\Extensions. Create property "update_url"=https://clients2.google.com/service/update2/crx
+Windows: Create a new key equal to extension id (dpnfjebdpkdecndmoiaecblljplgjnpj) under HKEY_LOCAL_MACHINE\Software\Wow6432Node\Google\Chrome\Extensions. Create property "update_url"=https://clients2.google.com/service/update2/crx
 
 Linux: Copy extension_id.json to /opt/google/chrome/extensions or /usr/share/google-chrome/extensions
 
 OSX: Copy extension_id.json to ~/Library/Application Support/Google/Chrome/External Extensions/
 
-extension_id.json - extension_id must be replaced by real extension id.
-
-File contents to load extension from Chrome Web Store:
+Create "dpnfjebdpkdecndmoiaecblljplgjnpj.json" with this contents:
 
 {
     "external_update_url": "https://clients2.google.com/service/update2/crx"
