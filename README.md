@@ -54,6 +54,16 @@ Run src\ie\makeieinstaller.bat
 
 ### Safari
 
+You will need xar and openssl installed.
+
+Use this instruction if any of preconfigured scripts fail:
+http://developer.streak.com/2013/01/how-to-build-safari-extension-using.html
+
+In most cases build can be done by running build-safari.sh from src folder.
+
+In case if developer certificate is renewed, you will have to repeat certificate extraction process. 
+Build extension using Safari Extension Builder, export your new Safari Developer Certificate in .p12 format with private key.
+Use 2 scripts: cert\extract-safari-keys.sh and cert\convert-safari-key.sh
 
 ## Install
 
@@ -87,4 +97,4 @@ Just run .exe installer, it will do the rest. Call it with /S to do it silently.
 
 ### Safari
 
-
+Double click on extension file in Finder and it will be installed.
