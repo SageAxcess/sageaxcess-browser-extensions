@@ -1,7 +1,18 @@
 var _port = '8111';
-var _appUrl = 'http://localhost:' + _port + '/';
+var _appUrl = 'http://localhost:' + _port;
 var _debug = false;
 var _processingUrls = {};
+
+chrome.storage.sync.get({
+  aegisAgentUrl: 'http://localhost:8111'
+}, function(items) {
+  _appUrl = items.aegisAgentUrl;
+});
+
+chrome.storage.onChanged.addListener(function(changes, areaName) {
+   if(changes.aegisAgentUrl!=null && changes.aegisAgentUrl!=undefined)
+     _appUrl = changes.aegisAgentUrl.newValue;
+});
 
 var _fields = [
     'username',
