@@ -5,8 +5,13 @@
 
 var _commonInterfaceName = "helper";
 
-var _port = '8111';
-var _appUrl = 'http://localhost:' + _port + '/';
+var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("sageaxcess.");
+prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+
+var _appUrl = prefs.getCharPref("agent.url");
+
 var _debug = false;
 var _fields = [
     'username',
@@ -29,7 +34,7 @@ function log() {
 
 Cu.import('resource://gre/modules/Services.jsm');
 
-const ScriptableInputStream = Components.Constructor(
+var ScriptableInputStream = Components.Constructor(
   "@mozilla.org/scriptableinputstream;1",
   "nsIScriptableInputStream",
   "init");

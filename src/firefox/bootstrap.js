@@ -5,6 +5,26 @@ Cu.import("resource://gre/modules/AddonManager.jsm");
 
 var self = this;
 
+var prefs = null;
+var _appUrl = "http://localhost:8111";
+
+var _settingsObserver = {
+	observe: function(subject, topic, data)
+	{
+		if (topic != "nsPref:changed")
+		{
+			return;
+		}
+
+		switch(data)
+		{
+			case "agent.url":
+				_appUrl = prefs.getCharPref("agent.url");
+				break;
+		}
+	}
+};
+
 function include(path, context) {
     Services.scriptloader.loadSubScript(getResourceURI(path), context || self);
 }
@@ -14,8 +34,16 @@ function getResourceURI(filePath) {
 }
 
 function startup(aData, aReason) {
-
     include("includes/utils.js");
+
+    prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("sageaxcess.");
+
+    prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+    prefs.addObserver("", _settingsObserver, false);
+
+    _appUrl = prefs.getCharPref("agent.url");
 
     watchWindows(function(window) {
 
@@ -37,6 +65,7 @@ function startup(aData, aReason) {
 }
 
 function shutdown(aData, aReason) {
+    prefs.removeObserver("", _settingsObserver);
 
     if (aReason == APP_SHUTDOWN) 
         return;
