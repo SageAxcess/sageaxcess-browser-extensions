@@ -39,15 +39,19 @@ chrome.webRequest.onBeforeRequest.addListener(function (details) {
         var formData = details.requestBody.formData;
         for (var field in formData) {
             if (_fields.indexOf(field.toLowerCase()) != -1) {
-                username = formData[field];
+                if (Object.prototype.toString.call( formData[field] ) === '[object Array]') {
+                   username = formData[field][0];
+                } else {
+                   username = formData[field];
+                }
                 break;
             }
-        }        
+        }
     }
     _processingUrls[details.requestId] = { verb: details.method, username: username };
 }, { urls: ['<all_urls>'], types: ['main_frame', 'sub_frame'] }, ['requestBody']);
 
-chrome.webRequest.onCompleted.addListener(function (details) {
+function processResponse(details) {
     if (_processingUrls[details.requestId]) {
         var completed = _processingUrls[details.requestId];
         delete _processingUrls[details.requestId];
@@ -72,7 +76,15 @@ chrome.webRequest.onCompleted.addListener(function (details) {
         }
         notifyApp(completed.verb, details.url, completed.username);
     }
-}, { urls: ['<all_urls>'], types: ['main_frame', 'sub_frame'] }, ['responseHeaders']);
+}
+
+chrome.webRequest.onCompleted.addListener(function (details) {
+   processResponse(details);
+}, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
+
+chrome.webRequest.onHeadersReceived.addListener(function (details) {
+   processResponse(details);
+}, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.action == 'hashchange') {
