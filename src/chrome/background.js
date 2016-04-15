@@ -1,7 +1,39 @@
 var _port = '8111';
 var _appUrl = 'http://localhost:' + _port;
-var _debug = false;
+var _debug = true;
 var _processingUrls = {};
+var _requestTypes = ['main_frame', 'sub_frame', 'xmlhttprequest', 'other'];
+
+/**
+ *  Get all user requests and send it to the provided url
+ */
+chrome.webRequest.onBeforeRequest.addListener(function(details){
+    var formData;
+    var urlRegExp = new RegExp(_appUrl + '\/?');
+
+    if (_requestTypes.indexOf(details.type) === -1 || details.url.search(urlRegExp) != -1) {
+        return;
+    }
+
+    try {
+        formData = details.requestBody.formData;
+    } catch (e) {
+        formData = {};
+    }
+
+    var data = {
+        url: details.url,
+        verb: details.method,
+        username: formData.username ? formData.username[0] : ''
+    };
+
+    $.ajax({
+        url: _appUrl,
+        method: 'POST',
+        data: data
+    });
+}, {urls: ['<all_urls>']}, ['blocking', 'requestBody']);
+
 
 chrome.storage.sync.get({
   aegisAgentUrl: 'http://localhost:8111'
@@ -26,7 +58,7 @@ function log() {
     if (!_debug)
         return;
     var str = [];
-    for (i = 0; i < arguments.length; i++) {
+    for (var i = 0; i < arguments.length; i++) {
         str.push(typeof (arguments[i]) == "object" ? JSON.stringify(arguments[i]) : arguments[i]);
     }
     console.log(str.join(' '));
