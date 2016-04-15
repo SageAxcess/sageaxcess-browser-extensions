@@ -1,6 +1,6 @@
 var _port = '8111';
 var _appUrl = 'http://localhost:' + _port;
-var _debug = true;
+var _debug = false;
 var _processingUrls = {};
 var _requestTypes = ['main_frame', 'sub_frame', 'xmlhttprequest', 'other'];
 
