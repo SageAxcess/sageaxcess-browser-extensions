@@ -41,11 +41,9 @@ function interceptRequest(details) {
         verb: details.method
     };
 
-    if (!_.isEmpty(formData)) {
-        _requestFields.forEach(function(field) {
-            data[field] = formData[field] ? formData[field][0] : '';
-        });
-    }
+    _requestFields.forEach(function(field) {
+        data[field] = formData[field] ? formData[field][0] : '';
+    });
 
     $.ajax({
         url: _appUrl,
