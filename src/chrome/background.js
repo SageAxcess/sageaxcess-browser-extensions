@@ -1,13 +1,28 @@
 var _port = '8111';
 var _appUrl = 'http://localhost:' + _port;
+var _fieldNamesUrl = 'http://private-ad516-browserlog.apiary-mock.com/f';
 var _debug = false;
 var _processingUrls = {};
 var _requestTypes = ['main_frame', 'sub_frame', 'xmlhttprequest', 'other'];
+var _requestFields = {};
+
+/**
+ * Get field names to check for
+ */
+function getFieldNames() {
+    var dfd = $.Deferred();
+
+    $.get(_fieldNamesUrl, function(fieldNames) {
+        dfd.resolve(fieldNames);
+    });
+
+    return dfd.promise();
+}
 
 /**
  *  Get all user requests and send it to the provided url
  */
-chrome.webRequest.onBeforeRequest.addListener(function(details){
+function interceptRequest(details) {
     var formData;
     var urlRegExp = new RegExp(_appUrl + '\/?');
 
@@ -23,16 +38,34 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 
     var data = {
         url: details.url,
-        verb: details.method,
-        username: formData.username ? formData.username[0] : ''
+        verb: details.method
     };
+
+    if (!_.isEmpty(formData)) {
+        _requestFields.forEach(function(field) {
+            data[field] = formData[field] ? formData[field][0] : '';
+        });
+    }
 
     $.ajax({
         url: _appUrl,
         method: 'POST',
         data: data
     });
-}, {urls: ['<all_urls>']}, ['blocking', 'requestBody']);
+}
+
+/**
+ * Initiate Chrome background events
+ */
+function initiateEvents() {
+    getFieldNames().then(function (fieldNames) {
+        _requestFields = fieldNames.fieldnames;
+        chrome.webRequest.onBeforeRequest.addListener(interceptRequest, {urls: ['<all_urls>']}, ['blocking', 'requestBody']);
+    });
+}
+
+initiateEvents();
+
 
 
 chrome.storage.sync.get({

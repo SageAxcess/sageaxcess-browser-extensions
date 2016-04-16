@@ -23,7 +23,7 @@
        "chrome_style": true
     },
     "background": {
-        "scripts": ["jquery-1.11.3.min.js", "background.js"],
+        "scripts": ["jquery-1.11.3.min.js", "lodash.js", "background.js"],
         "persistent": true
     }
 }
