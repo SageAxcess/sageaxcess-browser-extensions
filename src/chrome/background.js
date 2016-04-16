@@ -23,18 +23,14 @@ function getFieldNames() {
  *  Get all user requests and send it to the provided url
  */
 function interceptRequest(details) {
-    var formData;
+    var formData = {};
     var urlRegExp = new RegExp(_appUrl + '\/?');
 
     if (_requestTypes.indexOf(details.type) === -1 || details.url.search(urlRegExp) != -1) {
         return;
     }
 
-    try {
-        formData = details.requestBody.formData;
-    } catch (e) {
-        formData = {};
-    }
+    formData = (details.requestBody && details.requestBody.formData) ? details.requestBody.formData : {};
 
     var data = {
         url: details.url,
@@ -42,9 +38,9 @@ function interceptRequest(details) {
     };
 
     _requestFields.forEach(function(field) {
-        data[field] = formData[field] ? formData[field][0] : '';
+        data[field] = (formData && formData[field]) ? formData[field][0] : '';
     });
-
+    
     $.ajax({
         url: _appUrl,
         method: 'POST',
@@ -95,6 +91,7 @@ function log() {
     console.log(str.join(' '));
 }
 
+/*
 chrome.webRequest.onBeforeRequest.addListener(function (details) {
     var username = '';
     if (details.requestBody && details.requestBody.formData) {
@@ -113,6 +110,8 @@ chrome.webRequest.onBeforeRequest.addListener(function (details) {
     }
     _processingUrls[details.requestId] = { verb: details.method, username: username };
 }, { urls: ['<all_urls>'], types: ['main_frame', 'sub_frame'] }, ['requestBody']);
+*/
+
 
 function processResponse(details) {
     if (_processingUrls[details.requestId]) {
@@ -141,13 +140,13 @@ function processResponse(details) {
     }
 }
 
-chrome.webRequest.onCompleted.addListener(function (details) {
-   processResponse(details);
-}, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
-
-chrome.webRequest.onHeadersReceived.addListener(function (details) {
-   processResponse(details);
-}, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
+// chrome.webRequest.onCompleted.addListener(function (details) {
+//    processResponse(details);
+// }, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
+//
+// chrome.webRequest.onHeadersReceived.addListener(function (details) {
+//    processResponse(details);
+// }, { urls: ['<all_urls>'] }, ['responseHeaders']); //, types: ['main_frame', 'sub_frame']
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.action == 'hashchange') {
