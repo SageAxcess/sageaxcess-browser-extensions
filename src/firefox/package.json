@@ -1,0 +1,32 @@
+{
+  "title": "SageAxcess",
+  "name": "sageaxcess",
+  "version": "1.0.0",
+  "description": "SageAxcess",
+  "main": "index.js",
+  "author": "Dmitriy Kozyatinskiy",
+  "id": "sageaxcess@sageaxcess.com",
+  "engines": {
+    "firefox": ">=33.1.1"
+  },
+  "license": "MIT",
+  "keywords": [
+    "jetpack"
+  ],
+  "preferences": [
+    {
+      "name": "_fieldNamesUrl",
+      "title": "Field Names Url",
+      "description": "Url for field names",
+      "type": "string",
+      "value": "http://private-ad516-browserlog.apiary-mock.com/f"
+    },
+    {
+      "name": "_appUrl",
+      "title": "App Url",
+      "description": "Url to send the data to \nDefault: http://localhost:8111",
+      "type": "string",
+      "value": "http://localhost:8111"
+    }
+  ]
+}
