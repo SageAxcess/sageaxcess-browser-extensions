@@ -18,9 +18,11 @@ function restoreOptions() {
     chrome.storage.sync.set({
         aegisAgentUrl: 'http://localhost:8111',
         aegisAgentFieldUrl: 'http://private-ad516-browserlog.apiary-mock.com/f'
-    }, function (items) {
-        document.getElementById('agentUrl').value = items.aegisAgentUrl;
-        document.getElementById('fieldsUrl').value = items.aegisAgentFieldUrl;
+    }, function () {
+        chrome.storage.sync.get(['aegisAgentUrl', 'aegisAgentFieldUrl'], function (items) {
+            document.getElementById('agentUrl').value = items.aegisAgentUrl;
+            document.getElementById('fieldsUrl').value = items.aegisAgentFieldUrl;
+        });
     });
 }
 

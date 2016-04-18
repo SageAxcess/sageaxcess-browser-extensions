@@ -47,6 +47,7 @@ function interceptRequest(details) {
         url: _appUrl,
         method: 'POST',
         data: JSON.stringify(data),
+        dataType: 'json',
         contentType: 'application/json',
         processData: false
     });
@@ -65,8 +66,8 @@ function initiateEvents() {
 initiateEvents();
 
 chrome.storage.sync.get(['aegisAgentUrl', 'aegisAgentFieldUrl'], function (items) {
-    _appUrl = items.aegisAgentUrl;
-    _fieldNamesUrl = items.aegisAgentFieldUrl;
+    _appUrl = items.aegisAgentUrl || _appUrl;
+    _fieldNamesUrl = items.aegisAgentFieldUrl || _fieldNamesUrl;
 });
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
