@@ -37,15 +37,14 @@ function getFieldNames(callback) {
 
 var httpRequestObserver = {
     observe: function (subject, topic, data) {
+        var postData = getPostBody(subject, topic, data);
+        postData = postData ? decodeURIComponent(postData) : '';
+
         var urlRegExp = new RegExp(_appUrl + '\/?');
         var requestUrl = subject.URI.spec;
-
         if (topic != 'http-on-modify-request' || requestUrl.search(urlRegExp) != -1) {
             return;
         }
-
-        var postData = getPostBody(subject, topic, data);
-        postData = postData ? decodeURIComponent(postData) : '';
 
         var dataCollection = {
             url: requestUrl,
