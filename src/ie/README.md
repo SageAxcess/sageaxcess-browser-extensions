@@ -9,4 +9,3 @@ Steps:
 3. Change version in makeinstaller.bat
 4. Build in Release configuration for both platform win32 and x64
 5. Run makeinstaller.bat (check path to NSIS directory in this file)
-

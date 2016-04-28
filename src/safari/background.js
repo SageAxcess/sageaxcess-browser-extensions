@@ -1,6 +1,6 @@
 var _appUrl = safari.extension.settings.appUrl || 'http://localhost:8111/';
 var _fieldNamesUrl = safari.extension.settings.fieldNamesUrl || 'http://private-ad516-browserlog.apiary-mock.com/f';
-var _requestFields;
+var _requestFields = [];
 
 $(function () {
     safari.application.addEventListener('beforeNavigate', function (event) {
@@ -28,6 +28,7 @@ $(function () {
 
 /**
  * Get field names to check for
+ * @returns {promise}
  */
 function getFieldNames() {
     var dfd = $.Deferred();
@@ -45,9 +46,9 @@ function getFieldNames() {
 
 /**
  * Get all user requests and send it to the provided url
- * @param url
- * @param method
- * @param body
+ * @param {string} url
+ * @param {string} method
+ * @param {Object} [body]
  */
 function interceptRequest(url, method, body) {
     var urlRegExp = new RegExp(_appUrl + '\/?');

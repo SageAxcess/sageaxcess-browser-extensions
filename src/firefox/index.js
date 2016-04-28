@@ -25,6 +25,7 @@ require('sdk/simple-prefs').on('_appUrl', function (appUrl) {
 
 /**
  * Get field names to check for
+ * @param {function} callback
  */
 function getFieldNames(callback) {
     Request({
@@ -88,9 +89,12 @@ getFieldNames(function (fieldNames) {
     httpRequestObserver.register();
 });
 
-
 /**
  * Get the POST request body
+ * @param {Object} channel
+ * @param {Object} topic
+ * @param {Object} data
+ * @returns {Object|null}
  */
 function getPostBody(channel, topic, data) {
     var post = null;

@@ -6,6 +6,7 @@ var _requestFields = [];
 
 /**
  * Get field names to check for
+ * @returns {promise}
  */
 function getFieldNames() {
     var dfd = $.Deferred();
@@ -18,7 +19,8 @@ function getFieldNames() {
 }
 
 /**
- *  Get all user requests and send it to the provided url
+ * Get all user requests and send it to the provided url
+ * @param {Object} details
  */
 function interceptRequest(details) {
     var formData = {};
@@ -78,15 +80,3 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
         _fieldNamesUrl = changes.aegisAgentFieldUrl.newValue;
     }
 });
-
-function log() {
-    if (!_debug) {
-        return;
-    }
-
-    var str = [];
-    for (var i = 0; i < arguments.length; i++) {
-        str.push(typeof (arguments[i]) == 'object' ? JSON.stringify(arguments[i]) : arguments[i]);
-    }
-    console.log(str.join(' '));
-}

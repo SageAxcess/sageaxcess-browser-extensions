@@ -1,3 +1,6 @@
+/**
+ * Save options
+ */
 function saveOptions() {
     var agentUrl = document.getElementById('agentUrl').value;
     var fieldsUrl = document.getElementById('fieldsUrl').value;
@@ -14,6 +17,9 @@ function saveOptions() {
     });
 }
 
+/**
+ * Set the default values of options
+ */
 function restoreOptions() {
     chrome.storage.sync.set({
         aegisAgentUrl: 'http://localhost:8111',
