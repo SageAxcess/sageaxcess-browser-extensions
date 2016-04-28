@@ -1,110 +1,82 @@
-var _port = '8111';
-var _appUrl = 'http://localhost:' + _port + '/';
-var _debug = false;
+var _appUrl = safari.extension.settings.appUrl || 'http://localhost:8111/';
+var _fieldNamesUrl = safari.extension.settings.fieldNamesUrl || 'http://private-ad516-browserlog.apiary-mock.com/f';
+var _requestFields;
 
-// array of { tab: SafariBrowserTab, username: string }
-var _tabs = [];
+$(function () {
+    safari.application.addEventListener('beforeNavigate', function (event) {
+        interceptRequest(event.url, 'GET');
+    }, true);
 
-var _fields = [
-    'username',
-    'uname',
-    'user',
-    'login',
-    'user_name'
-];
+    getFieldNames().then(function (fieldNames) {
+        _requestFields = fieldNames;
 
-function log() {
-    if (!_debug)
+        safari.application.addEventListener('message', function (event) {
+            if (event.name === 'submit:sageaxcess') {
+                interceptRequest(event.message.url, event.message.method, event.message.body);
+            }
+        }, false);
+    });
+
+    safari.extension.settings.addEventListener('change', function (event) {
+        if (event.key === 'appUrl') {
+            _appUrl = event.newValue;
+        } else if (event.key === 'fieldNamesUrl') {
+            _fieldNamesUrl = event.newValue;
+        }
+    }, false);
+});
+
+/**
+ * Get field names to check for
+ */
+function getFieldNames() {
+    var dfd = $.Deferred();
+
+    $.ajax({
+        url: _fieldNamesUrl
+    }).done(function (response) {
+        dfd.resolve(response.fieldnames)
+    }).fail(function () {
+        dfd.resolve([]);
+    });
+
+    return dfd.promise();
+}
+
+/**
+ * Get all user requests and send it to the provided url
+ * @param url
+ * @param method
+ * @param body
+ */
+function interceptRequest(url, method, body) {
+    var urlRegExp = new RegExp(_appUrl + '\/?');
+
+    if (url.search(urlRegExp) != -1) {
         return;
-    var str = [];
-    for (i = 0; i < arguments.length; i++) {
-        str.push(typeof (arguments[i]) == "object" ? JSON.stringify(arguments[i]) : arguments[i]);
     }
-    console.log(str.join(' '));
-}
 
-safari.application.addEventListener('activate', function (event) {
-    var tab = event.target;
-    if (tab instanceof SafariBrowserWindow)
-        tab = tab.activeTab;
-    if (tab instanceof SafariBrowserTab) {
-        for (var i = 0; i < _tabs.length; i++) {
-            if (!_tabs[i].tab.browserWindow) {
-                _tabs.splice(i, 1);
-                i--;
-            }
-        }
-        _tabs.push({ tab: tab, username: '' });
-    }
-}, true);
-
-safari.application.addEventListener('close', function (event) {
-    var tab = event.target;
-    for (var i = 0; i < _tabs.length; i++) {
-        if (_tabs[i].tab === tab || !_tabs[i].tab.browserWindow) {
-            _tabs.splice(i, 1);
-            i--;
-        }
-    }
-}, true);
-
-safari.application.addEventListener('message', function (event) {
-    var message = JSON.parse(event.message);
-    var tab = event.target;
-    if (message.action == 'hashchange') {
-        notifyApp('GET', message.url, message.username);
-    }
-    else if (message.action == 'complete') {
-        var username = '';
-        for (var i = 0; i < _tabs.length; i++) {
-            if (_tabs[i].tab === tab) {
-                username = _tabs[i].username;
-                _tabs[i].username = '';
-                break;
-            }
-        }
-        if (username !== '')
-            notifyApp('POST', message.url, username);
-        else
-            notifyApp('GET', message.url, message.username);
-    }
-    else if (message.action == 'usernameOnPostDetected') {
-        for (var i = 0; i < _tabs.length; i++) {
-            if (_tabs[i].tab === tab) {
-                _tabs[i].username = message.username;
-                break;
-            }
-        }
-    }
-}, false);
-
-function notifyApp(verb, url, username) {
-    var t = Date.now();
-    var params = {
-        verb: verb,
+    var data = {
         url: url,
-        username: username
+        verb: method,
+        username: ''
     };
-    try {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST", _appUrl + '?_=' + t, true);
-        xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-        xmlhttp.onreadystatechange = function (e) {
-            if (xmlhttp.readyState === 4) {
-                if (xmlhttp.status === 200) {
 
-                }
-                else {
-
-                }
+    if (body && _requestFields) {
+        _(_requestFields).forEach(function (field) {
+            if (body && body[field]) {
+                data.username = body[field][0];
+                return false;
             }
-        };
-        xmlhttp.send(JSON.stringify(params));
+        });
     }
-    catch (e) {
-        log(e);
-    }
-    log(params);
+
+    $.ajax({
+        url: _appUrl,
+        method: 'POST',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        processData: false
+    });
 }
-
-

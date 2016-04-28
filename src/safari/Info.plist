@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>Author</key>
-    <string>SageAxcess</string>
-    <key>Builder Version</key>
-    <string>534.57.2</string>
-    <key>CFBundleDisplayName</key>
-    <string>SageAxcess</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.sageaxcess.extension</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0.1</string>
-    <key>CFBundleVersion</key>
-    <string>1.0.1.2</string>
-    <key>Chrome</key>
-    <dict>
-      <key>Database Quota</key>
-      <real>104857600</real>
-      <key>Global Page</key>
-      <string>background.html</string>
-    </dict>
-    <key>Content</key>
-    <dict>
-      <key>Scripts</key>
-      <dict>
-        <key>Start</key>
-        <array>
-          <string>jquery-1.11.3.min.js</string>
-          <string>content.js</string>
-          <string>forms.js</string>
-        </array>
-      </dict>
-    </dict>
-    <key>Description</key>
-    <string></string>
-    <key>ExtensionInfoDictionaryVersion</key>
-    <string>1.0</string>
-    <key>Permissions</key>
-    <dict>
-      <key>Website Access</key>
-      <dict>
-        <key>Include Secure Pages</key>
-        <true/>
-        <key>Level</key>
-        <string>All</string>
-      </dict>
-    </dict>
-    <key>Update Manifest URL</key>
-    <string></string>
-  </dict>
+<dict>
+	<key>Author</key>
+	<string>SageAxcess</string>
+	<key>Builder Version</key>
+	<string>11601.2.7.2</string>
+	<key>CFBundleDisplayName</key>
+	<string>SageAxcess</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sageaxcess.extension</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.1</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.1.2</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Database Quota</key>
+		<real>104857600</real>
+		<key>Global Page</key>
+		<string>background.html</string>
+	</dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>Start</key>
+			<array>
+				<string>jquery-1.11.3.min.js</string>
+				<string>content.js</string>
+			</array>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string></string>
+	<key>DeveloperIdentifier</key>
+	<string>0000000000</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+	<key>Update Manifest URL</key>
+	<string></string>
+</dict>
 </plist>
+
