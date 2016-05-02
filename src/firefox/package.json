@@ -1,13 +1,13 @@
 {
   "title": "SageAxcess",
   "name": "sageaxcess",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "SageAxcess",
   "main": "index.js",
-  "author": "Dmitriy Kozyatinskiy",
+  "author": "SageAxcess, Inc.",
   "id": "sageaxcess@sageaxcess.com",
   "engines": {
-    "firefox": ">=33.1.1"
+    "firefox": ">=33.1"
   },
   "license": "MIT",
   "keywords": [
