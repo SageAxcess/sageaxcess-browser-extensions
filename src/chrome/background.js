@@ -11,8 +11,12 @@ var _requestFields = [];
 function getFieldNames() {
     var dfd = $.Deferred();
 
-    $.get(_fieldNamesUrl, function (fieldNames) {
-        dfd.resolve(fieldNames);
+    $.ajax({
+        url: _fieldNamesUrl
+    }).done(function (response) {
+        dfd.resolve(response.fieldnames);
+    }).fail(function () {
+        dfd.resolve([]);
     });
 
     return dfd.promise();
@@ -60,7 +64,7 @@ function interceptRequest(details) {
  */
 function initiateEvents() {
     getFieldNames().then(function (fieldNames) {
-        _requestFields = fieldNames.fieldnames;
+        _requestFields = fieldNames;
         chrome.webRequest.onBeforeRequest.addListener(interceptRequest, {urls: ['<all_urls>']}, ['blocking', 'requestBody']);
     });
 }

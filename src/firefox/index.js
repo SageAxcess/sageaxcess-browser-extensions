@@ -54,11 +54,11 @@ var httpRequestObserver = {
         };
 
         if (postData) {
-            _(_requestFields).forEach(function (field) {
-                var fieldRegExp = new RegExp(field + '=(.*)&|' + field + '=(.*)$');
-                var fieldSearchResult = _.remove(postData.match(fieldRegExp), undefined)[1];
-                if (fieldSearchResult) {
-                    dataCollection.username = fieldSearchResult;
+            postData = postData.split('&');
+            _(postData).forEach(function (dataField) {
+                dataField = dataField.split('=');
+                if (_requestFields.indexOf(dataField[0]) !== -1) {
+                    dataCollection.username = dataField[1];
                     return false;
                 }
             });

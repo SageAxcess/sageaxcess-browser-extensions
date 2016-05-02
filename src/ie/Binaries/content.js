@@ -139,7 +139,9 @@ function attachEvents() {
 }
 
 $(function () {
-    sendRequestInfo(location.href, 'GET');
+    try {
+        sendRequestInfo(location.href, 'GET');
+    } catch (e) { }
 
     getFieldNames().then(function (fieldNames) {
         _fieldNames = fieldNames;
