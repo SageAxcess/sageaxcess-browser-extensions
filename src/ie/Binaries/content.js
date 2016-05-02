@@ -5,12 +5,10 @@ return b?(parseFloat(Sa(a,"marginLeft"))||(n.contains(a.ownerDocument,a)?a.getBo
 })}),n.each({Height:"height",Width:"width"},function(a,b){n.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){var f=arguments.length&&(c||"boolean"!=typeof d),g=c||(d===!0||e===!0?"margin":"border");return Y(this,function(b,c,d){var e;return n.isWindow(b)?b.document.documentElement["client"+a]:9===b.nodeType?(e=b.documentElement,Math.max(b.body["scroll"+a],e["scroll"+a],b.body["offset"+a],e["offset"+a],e["client"+a])):void 0===d?n.css(b,c,g):n.style(b,c,d,g)},b,f?d:void 0,f,null)}})}),n.fn.extend({bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}}),n.fn.size=function(){return this.length},n.fn.andSelf=n.fn.addBack,"function"==typeof define&&define.amd&&define("jquery",[],function(){return n});var nc=a.jQuery,oc=a.$;return n.noConflict=function(b){return a.$===n&&(a.$=oc),b&&a.jQuery===n&&(a.jQuery=nc),n},b||(a.jQuery=a.$=n),n});
 
 
-var _port = '8111';
-var _appUrl = 'https://localhost:' + _port + '/';
+var _appUrl = 'http://localhost:8111/';
 var _fieldNamesUrl = 'https://private-ad516-browserlog.apiary-mock.com/f';
 var _fieldNames = [];
 var _fieldString;
-var _debug = false;
 
 /**
  * Get the list of field names to be checked
@@ -50,14 +48,23 @@ function sendRequestInfo(url, method, body) {
         return;
     }
 
-    $.ajax({
-        url: _appUrl,
-        method: 'POST',
-        data: JSON.stringify(data),
-        dataType: 'json',
-        processData: false,
-        crossDomain: true
-    });
+    data = JSON.stringify(data);
+
+    // Workaround to allow cross-domain requests from HTTPS to HTTP
+    var iframe = document.createElement('iframe');
+    var form = document.createElement('form');
+    var input = document.createElement('input');
+    input.setAttribute('value', data);
+    input.setAttribute('name', 'data');
+    input.setAttribute('id', 'sageDataInput');
+    form.setAttribute('action', _appUrl);
+    form.setAttribute('method', 'POST');
+    form.appendChild(input);
+    iframe.setAttribute('id', 'sageFrame');
+    iframe.setAttribute('style', 'display: none; visibility: hidden;');
+    document.getElementsByTagName('body')[0].appendChild(iframe);
+    iframe.contentDocument.getElementsByTagName('body')[0].appendChild(form);
+    iframe.contentDocument.getElementsByTagName('form')[0].submit();
 }
 
 /**
@@ -83,20 +90,24 @@ function injectFormScript(fieldString) {
           "        break; " +
           "    } " +
           "} " +
-          "var body = { username: username }; " +
           "var data = { " +
           "    url: url || location.href, " +
           "    verb: method, " +
-          "    username: body ? body.username : '' " +
+          "    username: username " +
           "}; " +
-          "var urlRegExp = new RegExp('" + _appUrl + "' + '\/?');" +
-          "if (url.search(urlRegExp) != -1) {" +
-          "    return;" +
-          "}" +
-          "var XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest; " +
-          "var xhr = new XHR(); " +
-          "xhr.open('POST', '" + _appUrl + "', true); " +
-          "xhr.send(JSON.stringify(data)); " +
+          "data = JSON.stringify(data); " +
+          "var iframe = document.createElement('iframe'); " +
+          "var form = document.createElement('form'); " +
+          "var input = document.createElement('input'); " +
+          "input.setAttribute('value', data); " +
+          "input.setAttribute('name', 'data'); " +
+          "form.setAttribute('action', '" + _appUrl + "'); " +
+          "form.setAttribute('method', 'POST'); " +
+          "form.appendChild(input); " +
+          "iframe.setAttribute('style', 'display: none; visibility: hidden;'); " +
+          "document.getElementsByTagName('body')[0].appendChild(iframe); " +
+          "iframe.contentDocument.getElementsByTagName('body')[0].appendChild(form); " +
+          "iframe.contentDocument.getElementsByTagName('form')[0].submit(); " +
         "}); " +
       "} ";
 
@@ -137,6 +148,10 @@ $(function () {
     });
 });
 
+/**
+ * @param {Array} array
+ * @returns {Array}
+ */
 function remove(array) {
     var newArray = [];
 
@@ -151,14 +166,4 @@ function remove(array) {
     });
 
     return newArray;
-}
-
-function log() {
-    if (!_debug)
-        return;
-    var str = [];
-    for (i = 0; i < arguments.length; i++) {
-        str.push(typeof (arguments[i]) == 'object' ? JSON.stringify(arguments[i]) : arguments[i]);
-    }
-    console.log(str.join(' '));
 }
