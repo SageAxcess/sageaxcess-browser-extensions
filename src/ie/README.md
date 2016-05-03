@@ -4,6 +4,7 @@ For build sources you need
 - NSIS 2.46+ (http://sourceforge.net/projects/nsis/)
 
 Steps:
+
 1. Open solution ie.sln
 2. If needed increment version in Config.cpp and in resources (Content.rc and CommonInterface.rc)
 3. Change version in makeinstaller.bat
