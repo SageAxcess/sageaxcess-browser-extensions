@@ -3,6 +3,7 @@
     "name": "SageAxcess",
     "version": "1.0.2",
     "description": "",
+    "author": "SageAxcess, Inc.",
     "permissions": [ "<all_urls>", "tabs", "webRequest", "webRequestBlocking", "webNavigation", "storage" ],
     "content_scripts": [
         {

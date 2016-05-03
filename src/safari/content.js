@@ -1,7 +1,7 @@
 $(function () {
     $(document).on('submit', function (event) {
         var $form = $(event.target);
-        var url = event.target.action;
+        var url = event.target.action || location.href;
         var body = {};
 
         $form.find('input').each(function () {

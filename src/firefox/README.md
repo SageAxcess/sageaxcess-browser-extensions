@@ -7,3 +7,4 @@ To test add-on please do following steps:
 5.  Set `Enable add-on debugging` to true
 6.  Click on the `Load Temporary Add-on` button and select your `.xpi` file
 5.  To get the add-on console, press `Debug`
+Please not, that add-on is deleted when you close browser.

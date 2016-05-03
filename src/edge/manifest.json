@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "name": "SageAxcess",
+    "version": "1.0.2",
+    "description": "",
+    "author": "SageAxcess, Inc.",
+    "permissions": [ "<all_urls>", "tabs", "webRequest", "webRequestBlocking", "webNavigation", "storage" ],
+    "content_scripts": [
+        {
+            "matches": [ "<all_urls>" ],
+            "js": [ "jquery-1.11.3.min.js", "lodash.js", "content.js" ],
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ]
+}

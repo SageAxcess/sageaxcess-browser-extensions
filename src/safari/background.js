@@ -66,7 +66,7 @@ function interceptRequest(url, method, body) {
     if (body && _requestFields) {
         _(_requestFields).forEach(function (field) {
             if (body && body[field]) {
-                data.username = body[field][0];
+                data.username = body[field];
                 return false;
             }
         });
