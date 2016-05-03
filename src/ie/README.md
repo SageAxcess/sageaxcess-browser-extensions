@@ -15,4 +15,6 @@ Steps:
 9. Add http://localhost to trusted websites
 10. Go back to Trusted Sites and click on Custom level button
 11. Set "Display Mixed Content" to "Enable"
-12. Save and restart browser
+12. Go to Internet Options --> Security --> Internet --> Custom level
+13. Set "Display Mixed Content" to "Enable"
+14. Save and restart browser
