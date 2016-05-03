@@ -1,4 +1,4 @@
-Note: Edge extensions is still an experimental technology and not avialable for a regular Windows 10 build
+Note: Edge extensions is still an experimental technology and not available for a regular Windows 10 build
 
 To test extension please do following steps:
 -----------------------
