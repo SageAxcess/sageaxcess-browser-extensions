@@ -1,4 +1,4 @@
-var _appUrl = safari.extension.settings.appUrl || 'http://localhost:8111/';
+var _appUrl = safari.extension.settings.appUrl || 'https://local.sageaxcess.com/';
 var _fieldNamesUrl = safari.extension.settings.fieldNamesUrl || 'http://private-ad516-browserlog.apiary-mock.com/f';
 var _requestFields = [];
 

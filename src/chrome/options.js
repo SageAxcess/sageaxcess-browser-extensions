@@ -22,7 +22,7 @@ function saveOptions() {
  */
 function restoreOptions() {
     chrome.storage.sync.set({
-        aegisAgentUrl: 'http://localhost:8111',
+        aegisAgentUrl: 'https://local.sageaxcess.com/',
         aegisAgentFieldUrl: 'http://private-ad516-browserlog.apiary-mock.com/f'
     }, function () {
         chrome.storage.sync.get(['aegisAgentUrl', 'aegisAgentFieldUrl'], function (items) {

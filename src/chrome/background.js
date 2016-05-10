@@ -1,4 +1,4 @@
-var _appUrl = 'http://localhost:8111';
+var _appUrl = 'https://local.sageaxcess.com/';
 var _fieldNamesUrl = 'http://private-ad516-browserlog.apiary-mock.com/f';
 var _debug = false;
 var _requestTypes = ['main_frame', 'sub_frame', 'xmlhttprequest', 'other'];

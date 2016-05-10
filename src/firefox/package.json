@@ -17,9 +17,9 @@
     {
       "name": "_appUrl",
       "title": "App Url",
-      "description": "Url to send the data to \nDefault: http://localhost:8111",
+      "description": "Url to send the data to \nDefault: https://local.sageaxcess.com/",
       "type": "string",
-      "value": "http://localhost:8111"
+      "value": "https://local.sageaxcess.com/"
     },
     {
       "name": "_fieldNamesUrl",

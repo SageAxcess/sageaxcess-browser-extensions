@@ -5,8 +5,8 @@ return b?(parseFloat(Sa(a,"marginLeft"))||(n.contains(a.ownerDocument,a)?a.getBo
 })}),n.each({Height:"height",Width:"width"},function(a,b){n.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){var f=arguments.length&&(c||"boolean"!=typeof d),g=c||(d===!0||e===!0?"margin":"border");return Y(this,function(b,c,d){var e;return n.isWindow(b)?b.document.documentElement["client"+a]:9===b.nodeType?(e=b.documentElement,Math.max(b.body["scroll"+a],e["scroll"+a],b.body["offset"+a],e["offset"+a],e["client"+a])):void 0===d?n.css(b,c,g):n.style(b,c,d,g)},b,f?d:void 0,f,null)}})}),n.fn.extend({bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}}),n.fn.size=function(){return this.length},n.fn.andSelf=n.fn.addBack,"function"==typeof define&&define.amd&&define("jquery",[],function(){return n});var nc=a.jQuery,oc=a.$;return n.noConflict=function(b){return a.$===n&&(a.$=oc),b&&a.jQuery===n&&(a.jQuery=nc),n},b||(a.jQuery=a.$=n),n});
 
 
-var _appUrl = 'http://localhost:8111/';
-var _fieldNamesUrl = 'https://private-ad516-browserlog.apiary-mock.com/f';
+var _appUrl = 'local.sageaxcess.com/';
+var _fieldNamesUrl = 'private-ad516-browserlog.apiary-mock.com/f';
 var _fieldNames = [];
 var _fieldString;
 
@@ -17,6 +17,12 @@ var _fieldString;
  */
 function getFieldNames() {
     var dfd = $.Deferred();
+
+    if (location.href.search(/https/gi) !== -1) {
+        _fieldNamesUrl = 'https://' + _fieldNamesUrl;
+    } else {
+        _fieldNamesUrl = 'http://' + _fieldNamesUrl;
+    }
 
     $.ajax({
         url: _fieldNamesUrl
@@ -50,21 +56,14 @@ function sendRequestInfo(url, method, body) {
 
     data = JSON.stringify(data);
 
-    // Workaround to allow cross-domain requests from HTTPS to HTTP
-    var iframe = document.createElement('iframe');
-    var form = document.createElement('form');
-    var input = document.createElement('input');
-    input.setAttribute('value', data);
-    input.setAttribute('name', 'data');
-    input.setAttribute('id', 'sageDataInput');
-    form.setAttribute('action', _appUrl);
-    form.setAttribute('method', 'POST');
-    form.appendChild(input);
-    iframe.setAttribute('id', 'sageFrame');
-    iframe.setAttribute('style', 'display: none; visibility: hidden;');
-    document.getElementsByTagName('body')[0].appendChild(iframe);
-    iframe.contentDocument.getElementsByTagName('body')[0].appendChild(form);
-    iframe.contentDocument.getElementsByTagName('form')[0].submit();
+    $.ajax({
+        url: _appUrl,
+        method: 'POST',
+        data: data,
+        dataType: 'json',
+        contentType: 'application/json',
+        processData: false
+    });
 }
 
 /**
@@ -92,22 +91,16 @@ function injectFormScript(fieldString) {
           "} " +
           "var data = { " +
           "    url: url || location.href, " +
-          "    verb: method, " +
+          "    verb: method || 'POST', " +
           "    username: username " +
           "}; " +
           "data = JSON.stringify(data); " +
-          "var iframe = document.createElement('iframe'); " +
-          "var form = document.createElement('form'); " +
-          "var input = document.createElement('input'); " +
-          "input.setAttribute('value', data); " +
-          "input.setAttribute('name', 'data'); " +
-          "form.setAttribute('action', '" + _appUrl + "'); " +
-          "form.setAttribute('method', 'POST'); " +
-          "form.appendChild(input); " +
-          "iframe.setAttribute('style', 'display: none; visibility: hidden;'); " +
-          "document.getElementsByTagName('body')[0].appendChild(iframe); " +
-          "iframe.contentDocument.getElementsByTagName('body')[0].appendChild(form); " +
-          "iframe.contentDocument.getElementsByTagName('form')[0].submit(); " +
+          "var XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest; " +
+          "var xhr = new XHR(); " +
+          "var xhr = new XMLHttpRequest(); " +
+          "xhr.open('POST', '" + _appUrl + "', true); " +
+          "xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8'); " +
+          "xhr.send(data); " +
         "}); " +
       "} ";
 
@@ -139,6 +132,12 @@ function attachEvents() {
 }
 
 $(function () {
+    if (location.href.search(/https/gi) !== -1) {
+        _appUrl = 'https://' + _appUrl;
+    } else {
+        _appUrl = 'http://' + _appUrl;
+    }
+
     try {
         sendRequestInfo(location.href, 'GET');
     } catch (e) { }
