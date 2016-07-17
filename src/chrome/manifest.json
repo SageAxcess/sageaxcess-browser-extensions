@@ -8,7 +8,7 @@
     "content_scripts": [
         {
             "matches": [ "<all_urls>" ],
-            "js": [ "jquery-1.11.3.min.js" ],
+            "js": [ "jquery-1.11.3.min.js", "formSubmitListener.js" ],
             "all_frames": true,
             "run_at": "document_start"
         }
@@ -18,7 +18,7 @@
        "chrome_style": true
     },
     "background": {
-        "scripts": ["jquery-1.11.3.min.js", "lodash.js", "background.js"],
+        "scripts": [ "jquery-1.11.3.min.js", "lodash.js", "background.js" ],
         "persistent": true
     }
 }
