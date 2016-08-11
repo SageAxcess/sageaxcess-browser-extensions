@@ -19,7 +19,7 @@
       "title": "App Url",
       "description": "Url to send the data to \nDefault: https://local.sageaxcess.com/",
       "type": "string",
-      "value": "https://local.sageaxcess.com/"
+      "value": "https://local.sageaxcess.com:8112/"
     },
     {
       "name": "_fieldNamesUrl",
