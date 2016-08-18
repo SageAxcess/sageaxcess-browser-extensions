@@ -47,7 +47,8 @@ function sendRequestInfo(url, method, body) {
         url: url || location.href,
         verb: method,
         username: body ? body.username: ''
-    };
+    };	
+
     var urlRegExp = new RegExp(_appUrl + '\/?');
 
     if (url.search(urlRegExp) != -1) {
@@ -55,14 +56,14 @@ function sendRequestInfo(url, method, body) {
     }
 
     data = JSON.stringify(data);
-
+	
     $.ajax({
         url: _appUrl,
         method: 'POST',
-        data: data,
-        dataType: 'json',
-        contentType: 'application/json',
-        processData: false
+        data: data//,
+        //dataType: 'json',
+        //contentType: 'application/json',
+        //processData: false
     });
 }
 
