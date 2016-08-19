@@ -80,14 +80,8 @@ function injectFormScript(fieldString) {
           "var fieldString = '" + fieldString + "'; " +
           "var fieldNames = fieldString.split(' '); " +
           "var form = event.target;" +
-          "var method = form.getAttribute('method'); " +
-		  "if (method != null) { " +
-		  "		method = method.toUpperCase(); " + 
-		  "} " +
-          "var url = location.host; " +
-		  "if (form.getAttribute('action') != null) { " +
-		  "		url = url + form.getAttribute('action'); " + 
-		  "} " +
+          "var method = form.getAttribute('method'); " +		  
+          "var url = location.host; " + //form.getAttribute('action'); " +		  
           "var inputs = form.getElementsByTagName('input'); " +
           "var username = ''; " +
           "for (var j = 0; j < inputs.length; ++j) { " +
@@ -98,7 +92,7 @@ function injectFormScript(fieldString) {
           "} " +
           "var data = { " +
           "    url: url || location.href, " +
-          "    verb: method || 'POST', " +
+          "    verb: method.toUpperCase() || 'POST', " +
           "    username: username " +
           "}; " +
           "data = JSON.stringify(data); " +
