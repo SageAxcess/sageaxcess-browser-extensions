@@ -81,7 +81,13 @@ function injectFormScript(fieldString) {
           "var fieldNames = fieldString.split(' '); " +
           "var form = event.target;" +
           "var method = form.getAttribute('method'); " +
-          "var url = location.host + form.getAttribute('action'); " +
+		  "if (method != null) { " +
+		  "		method = method.toUpperCase(); " + 
+		  "} " +
+          "var url = location.host; " +
+		  "if (form.getAttribute('action') != null) { " +
+		  "		url = url + form.getAttribute('action'); " + 
+		  "} " +
           "var inputs = form.getElementsByTagName('input'); " +
           "var username = ''; " +
           "for (var j = 0; j < inputs.length; ++j) { " +
