@@ -100,7 +100,7 @@ function injectFormScript(fieldString) {
           "var xhr = new XHR(); " +
           "var xhr = new XMLHttpRequest(); " +
           "xhr.open('POST', '" + _appUrl + "', true); " +
-          "xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8'); " +
+          //"xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8'); " +
           "xhr.send(data); " +
         "}); " +
       "} ";
