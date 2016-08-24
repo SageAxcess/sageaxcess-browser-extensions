@@ -1,0 +1,37 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s '%NAME%'
+		'Content.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}
+
+HKLM 
+{
+	NoRemove SOFTWARE 
+	{
+		NoRemove Microsoft 
+		{   
+			NoRemove Windows 
+			{
+				NoRemove CurrentVersion 
+				{
+					NoRemove Explorer 
+					{
+						NoRemove 'Browser Helper Objects' 
+						{
+							ForceRemove '%CLSIDBrowserHelper%'
+							{
+								val 'NoExplorer' = d '1'
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

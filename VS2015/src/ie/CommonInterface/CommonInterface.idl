@@ -1,0 +1,45 @@
+// CommonInterface.idl : IDL source for CommonInterface
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CommonInterface.tlb) and marshalling code.
+
+cpp_quote("#if ( _MSC_VER >= 1020 )")
+cpp_quote("#pragma once")
+cpp_quote("#endif")
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(C425A28F-6A1D-4EF8-9547-DC2CE925D410),
+	version(1.0),
+	helpstring("CommonInterface 1.0 Type Library")
+]
+library CommonInterfaceLib
+{
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(BE32B491-A125-4D8F-90F3-0D9EC9444444),
+		dual,
+		nonextensible,
+		pointer_default(unique)
+	]
+	interface IContentHelper : IDispatch
+	{
+		// cross-domain XMLHttpRequest object
+		[id(1)] HRESULT getXMLHttpRequest([out, retval] IDispatch** ppRequest);
+		// add listener to listen events from document or iframe
+		[id(2)] HRESULT addListener([in] BSTR action, [in] IDispatch* pCallback);
+		// remove listener
+		[id(3)] HRESULT removeListener([in] BSTR action, [in] IDispatch* pCallback);
+		// send message to document or iframe
+		[id(4)] HRESULT sendMessage([in] BSTR action, [in, defaultvalue(0)] IDispatch* pData, [in, defaultvalue(0)] IDispatch* pCallback);
+		// add username field name to dictionary, so BHO can check it on BeforeNavigate event
+		[id(5)] HRESULT addUsernameMask([in] VARIANT* pMask);
+		// last found username in BeforeNavigate event
+		[id(6)] HRESULT getUsername([out, retval] VARIANT* pValue);
+	};
+};

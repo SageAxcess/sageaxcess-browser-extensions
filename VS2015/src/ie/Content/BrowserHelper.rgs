@@ -1,0 +1,26 @@
+HKCR
+{
+	'%NAME%.BrowserHelper.1' = s '%NAME%'
+	{
+		CLSID = s '%CLSIDBrowserHelper%'
+	}
+	'%NAME%.BrowserHelper' = s '%NAME%'
+	{
+		CLSID = s '%CLSIDBrowserHelper%'
+		CurVer = s '%NAME%.BrowserHelper.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %CLSIDBrowserHelper% = s '%NAME%'
+		{
+			ProgID = s '%NAME%.BrowserHelper.1'
+			VersionIndependentProgID = s '%NAME%.BrowserHelper'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '%LIBIDContentLib%'
+		}
+	}
+}
